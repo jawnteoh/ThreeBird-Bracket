@@ -88,8 +88,25 @@
   </div>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4"></script>
-<script src="config.js"></script>
-<script src="app.js"></script>
+<script>
+(function () {
+  var libs = [
+    "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js",
+    "https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.js",
+    "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4"
+  ];
+  function add(src, next) {
+    var s = document.createElement("script");
+    s.src = src; s.async = false; s.onload = function () { next(true); }; s.onerror = function () { next(false); };
+    document.head.appendChild(s);
+  }
+  function loadLib(i, done) {
+    if (window.supabase && window.supabase.createClient) return done();
+    if (i >= libs.length) return done();
+    add(libs[i], function () { loadLib(i + 1, done); });
+  }
+  loadLib(0, function () { add("config.js", function () { add("app.js", function () {}); }); });
+})();
+</script>
 </body>
 </html>

@@ -586,6 +586,7 @@
   }
 
   function initSync() {
+    if (CFG.supabaseUrl && CFG.supabaseAnonKey && !(window.supabase && window.supabase.createClient)) { setNote("Backend library not loaded"); return; }
     if (!REMOTE) return;
     sb = window.supabase.createClient(CFG.supabaseUrl, CFG.supabaseAnonKey);
     canEdit = false; applyEditable();
@@ -599,9 +600,9 @@
     form.addEventListener("submit", function (e) {
       e.preventDefault(); err.textContent = "";
       sb.auth.signInWithPassword({ email: document.getElementById("auth-email").value.trim(), password: document.getElementById("auth-pass").value }).then(function (r) {
-        if (r.error) { err.textContent = "Wrong email or password"; return; }
+        if (r.error) { err.textContent = r.error.message || "Sign in failed"; return; }
         document.getElementById("auth-pass").value = "";
-      });
+      }).catch(function () { err.textContent = "Could not reach Supabase. Check the URL and key in config.js."; });
     });
     sb.auth.getSession().then(function (r) { setAuth(!!(r.data && r.data.session)); });
     sb.auth.onAuthStateChange(function (ev, session) { setAuth(!!session); });
