@@ -2,5 +2,5 @@
 // The anon key is meant to be public. Never paste a service_role key here.
 window.TB_CONFIG = {
   supabaseUrl: "https://ogaewywddgrkctcfpbjy.supabase.co",
-  supabaseAnonKey: "sb_secret_fV0HXWIUL0BB_aQIQERhhA_OaFFKo13"
+  supabaseAnonKey: "sb_publishable_4_LGd_PLPsi9K_hO5jzJYw_4sqI4Qee"
 };
