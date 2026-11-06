@@ -439,15 +439,23 @@
     b.setAttribute("aria-label", open ? "Close" : "Expand"); b.title = open ? "Close" : "Expand";
     var pth = b.querySelector("path"); if (pth) pth.setAttribute("d", open ? IC_CLOSE : IC_OPEN);
   }
+  var fitting = false;
   function fitX() {
-    if (!xOpen) return;
-    var f = xOpen.querySelector(".xfit"); if (!f) return;
-    var w0 = parseFloat(f.getAttribute("data-w")) || 960;
-    if (f.style.width !== w0 + "px") f.style.width = w0 + "px";
-    f.style.transform = "none";
-    var h0 = f.offsetHeight;
-    var s = Math.min((xOpen.clientWidth - 32) / w0, (xOpen.clientHeight - 32) / h0, 2.5);
-    if (s > 0) f.style.transform = "scale(" + s + ")";
+    if (!xOpen || fitting) return;
+    fitting = true;
+    var f = xOpen.querySelector(".xfit"); if (!f) { fitting = false; return; }
+    var cs = getComputedStyle(xOpen);
+    var cw = xOpen.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    var ch = xOpen.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+    f.style.width = cw + "px";
+    var lo = 8, hi = 64;
+    for (var i = 0; i < 12; i++) {
+      var mid = (lo + hi) / 2;
+      xOpen.style.setProperty("--fs", mid + "px");
+      if (f.offsetHeight <= ch && f.scrollWidth <= cw + 1) lo = mid; else hi = mid;
+    }
+    xOpen.style.setProperty("--fs", lo + "px");
+    fitting = false;
   }
   function openX(sec) {
     if (xOpen) closeX();
@@ -459,11 +467,12 @@
     if (!xOpen) return;
     var sec = xOpen; xOpen = null;
     var f = sec.querySelector(".xfit"); if (f) { f.style.width = ""; f.style.transform = ""; }
+    sec.style.removeProperty("--fs");
     sec.classList.remove("full"); document.body.classList.remove("xlock"); setLbl(sec, false);
     if (document.fullscreenElement && document.exitFullscreen) { try { var pr = document.exitFullscreen(); if (pr && pr.catch) pr.catch(function () {}); } catch (e) {} }
   }
   window.addEventListener("resize", fitX);
-  if (window.ResizeObserver) document.querySelectorAll(".xfit").forEach(function (f) { new ResizeObserver(fitX).observe(f); });
+  if (window.ResizeObserver) document.querySelectorAll(".xfit").forEach(function (f) { new ResizeObserver(function () { if (xOpen && !fitting) requestAnimationFrame(fitX); }).observe(f); });
   document.querySelectorAll(".xbtn").forEach(function (b) {
     b.addEventListener("click", function () {
       var sec = document.getElementById(b.getAttribute("data-sec"));

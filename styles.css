@@ -73,9 +73,10 @@ tr.lead td { background: rgba(214,31,38,.07); }
 .xbtn:hover { opacity: .8; }
 .xbtn svg { width: 20px; height: 20px; display: block; }
 .tbanner .xbtn { margin-left: auto; }
-.xsec.full, .xsec:fullscreen { display: flex; align-items: center; justify-content: center; overflow: hidden; background: var(--glint); padding: 16px; }
+.xsec.full, .xsec:fullscreen { display: flex; align-items: center; justify-content: center; overflow: hidden; background: var(--glint); padding: clamp(8px, 1.5vw, 28px); }
 .xsec.full { position: fixed; inset: 0; z-index: 40; }
-.xsec.full .xfit, .xsec:fullscreen .xfit { flex: none; transform-origin: center center; }
+.xsec.full .xfit, .xsec:fullscreen .xfit { flex: none; }
+.xsec.full .ko, .xsec:fullscreen .ko { min-width: 0; }
 body.xlock { overflow: hidden; }
 /* tabs */
 .tabs { background: var(--ink); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; }
