@@ -496,8 +496,9 @@
     var n = t.textContent.length;
     sub.style.fontSize = "18px"; sub.style.letterSpacing = "0px";
     var w0 = t.getBoundingClientRect().width;
-    var max = target * 0.86;
-    if (w0 > max) { sub.style.fontSize = (18 * max / w0) + "px"; w0 = t.getBoundingClientRect().width; }
+    var size = Math.max(11, 18 * (target * 0.8) / w0);
+    sub.style.fontSize = size + "px"; w0 = t.getBoundingClientRect().width;
+    if (w0 > target * 0.92) { sub.style.fontSize = (size * target * 0.92 / w0) + "px"; w0 = t.getBoundingClientRect().width; }
     sub.style.letterSpacing = ((target - w0) / (n - 1)) + "px";
   }
   window.addEventListener("resize", fitSub);

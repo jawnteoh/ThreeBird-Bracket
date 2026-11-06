@@ -185,3 +185,69 @@ button.danger { background: var(--cardinal); }
 .authform input { height: 40px; padding: 0 10px; font: 500 16px var(--body); border: 1.5px solid var(--glint); background: var(--glint); color: var(--ink); border-radius: 0; min-width: 0; flex: 1 1 180px; max-width: 280px; }
 .auth-err { color: var(--glint); font-weight: 700; font-size: 14px; }
 body.viewer .match input, body.viewer .slot input { pointer-events: none; }
+
+/* ===== Responsive scaling: layout fills the window and type, spacing and assets scale with it ===== */
+:root { --fs: clamp(11px, .9vw + 7px, 26px); }
+.xsec.full, .xsec:fullscreen { --fs: 16px; }
+
+.wrap {
+  max-width: none;
+  padding-left: max(clamp(12px, 2.4vw, 56px), env(safe-area-inset-left, 0px));
+  padding-right: max(clamp(12px, 2.4vw, 56px), env(safe-area-inset-right, 0px));
+}
+main .wrap { padding-block: calc(var(--fs) * 2.2) calc(var(--fs) * 3.4); gap: calc(var(--fs) * 2.6); }
+.page { gap: calc(var(--fs) * 2.6); }
+.tabs a { font-size: clamp(18px, 1.2vw + 10px, 34px); }
+
+/* header */
+.hero .wrap { padding-block: calc(var(--fs) * 1.8) calc(var(--fs) * 2); gap: calc(var(--fs) * .9); }
+.crest { width: clamp(88px, 8vw, 220px); }
+h1 { font-size: clamp(56px, 11vw, 230px); }
+.meta { font-size: clamp(16px, 2.2vw, 44px); }
+
+/* shared banner, strip and expand button */
+.xsec { font-size: var(--fs); }
+.tbanner { padding: .8em 1.1em; gap: .9em; }
+.tbanner h2 { font-size: calc(var(--fs) * 2.7); }
+.mini { width: calc(var(--fs) * 2.4); height: calc(var(--fs) * 3.1); background-position: 50% calc(var(--fs) * .27); }
+.tstrip { height: var(--fs); }
+.xbtn { width: calc(var(--fs) * 2.4); height: calc(var(--fs) * 2.4); }
+.xbtn svg { width: calc(var(--fs) * 1.3); height: calc(var(--fs) * 1.3); }
+.sw { width: .85em; height: .85em; margin-right: .5em; }
+.sw.after { margin-right: 0; margin-left: .5em; }
+.mv { font-size: .95em; line-height: 1.4; margin-left: .6em; }
+
+/* league table */
+.tcard table { min-width: 0; font-size: var(--fs); }
+.tcard th, .tcard td { padding: .75em .55em; }
+.tcard th { font-size: .78em; }
+.tcard td.pos { font-size: 1.2em; width: 3.2em; padding-left: .9em; }
+.tcard td.team { font-size: 1em; }
+.tcard td:not(.team):not(.pos) { font-size: 1.15em; }
+.tcard td.pts:not(.team):not(.pos) { font-size: 1.25em; }
+.tcard tr.cut td { border-top-width: .2em; }
+tr.qual td.pos::before { width: .8em; }
+
+/* fixtures */
+.rounds { font-size: var(--fs); grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(var(--fs) * 21)), 1fr)); gap: 1.3em; }
+.round h3 { font-size: 1.4em; padding: .5em .8em; }
+.match { grid-template-columns: minmax(0, 1fr) calc(var(--fs) * 2.8) .8em calc(var(--fs) * 2.8) minmax(0, 1fr); gap: .45em; padding: .55em .8em; }
+.match input { width: calc(var(--fs) * 2.8); height: calc(var(--fs) * 2.4); font-size: calc(var(--fs) * 1.15); }
+
+/* bracket */
+.kbar { min-height: calc(var(--fs) * 2.8); padding: .2em .4em .2em 1em; font-size: calc(var(--fs) * .8); }
+.ko-scroll { padding: 1.1em; }
+.ko { min-width: 0; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.8em; font-size: var(--fs); }
+.ko-col, .ko-body { gap: 1em; }
+.ko-col > h3 { font-size: 1.5em; }
+.km .cap { font-size: .75em; padding: .55em .8em; }
+.slot { grid-template-columns: 1.6em minmax(0, 1fr) calc(var(--fs) * 2.8); gap: .5em; padding: .5em .65em; }
+.slot.q { padding-left: 1.3em; }
+.slot.q::before { width: .65em; }
+.slot .seed { font-size: 1.25em; }
+.slot input { width: calc(var(--fs) * 2.8); height: calc(var(--fs) * 2.4); font-size: calc(var(--fs) * 1.25); }
+.pens { font-size: .8em; padding: .6em .7em; }
+.pens button { height: 2.4em; font-size: 1em; }
+.champ { padding: 1em 1.3em; }
+.champ .display { font-size: calc(var(--fs) * 3.6); }
+@media (max-width: 700px) { .ko { min-width: 560px; } }
